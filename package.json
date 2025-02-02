@@ -2,7 +2,7 @@
   "name": "xitool-vscode",
   "displayName": "XiTool-vscode",
   "description": "A set of tools for markdown notebook",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "res/icons/icon2.png",
   "publisher": "Mrxixixixi",
   "engines": {
@@ -166,7 +166,9 @@
         },
         "xitool-vscode.ignoreFolder": {
           "type": "array",
-          "default": [".git"],
+          "default": [
+            ".git"
+          ],
           "description": "The folder to ignore."
         },
         "xitool-vscode.enableDropImage": {
