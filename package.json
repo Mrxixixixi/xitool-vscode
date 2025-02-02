@@ -1,0 +1,347 @@
+{
+  "name": "xitool-vscode",
+  "displayName": "XiTool-vscode",
+  "description": "A set of tools for markdown notebook",
+  "version": "0.0.3",
+  "icon": "res/icons/icon2.png",
+  "publisher": "Mrxixixixi",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "notebook",
+    "tool",
+    "image"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xi-tool/xitool-vscode.git"
+  },
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "xitool-vscode.pasteImage",
+        "title": "Paste Image"
+      },
+      {
+        "command": "xitool-vscode.refreshUnusedImage",
+        "title": "Refresh Unused Image",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "xitool-vscode.deleteFile",
+        "title": "Delete",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "xitool-vscode.copyName",
+        "title": "Copy Name",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "xitool-vscode.revealInFileExplorer",
+        "title": "Reveal In File Explorer",
+        "icon": "$(file-explorer)"
+      },
+      {
+        "command": "xitool-vscode.openSource",
+        "title": "Open Source",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "xitool-vscode.openNoteInBrowser",
+        "title": "Open In Browser",
+        "icon": "$(browser)"
+      },
+      {
+        "command": "xitool-vscode.replaceNoteMathJaxPath",
+        "title": "Replace MathJax Path",
+        "icon": "$(replace)"
+      },
+      {
+        "command": "xitool-vscode.createHtmlFile",
+        "title": "Create Html File",
+        "icon": "$(create)"
+      },
+      {
+        "command": "xitool-vscode.openNoteHtml",
+        "title": "Open Html File",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "xitool-vscode.deleteNoteHtml",
+        "title": "Delete Html File",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "xitool-vscode.deleteNoteMd",
+        "title": "Delete Md File",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "xitool-vscode.addFile",
+        "title": "Add File",
+        "icon": "$(file-add)"
+      },
+      {
+        "command": "xitool-vscode.refreshFileNote",
+        "title": "Refresh File Note",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "xitool-vscode.refreshFileDrawio",
+        "title": "Refresh File Drawio",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "xitool-vscode.addFolder",
+        "title": "Add Folder",
+        "icon": "$(file-directory-create)"
+      },
+      {
+        "command": "xitool-vscode.setNoteModeClean",
+        "title": "Work Mode",
+        "icon": "$(pencil)"
+      },
+      {
+        "command": "xitool-vscode.setNoteModeWork",
+        "title": "Clean Mode",
+        "icon": "$(coffee)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "xitool-vscode.pasteImage",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "xitool-vscode",
+      "properties": {
+        "xitool-vscode.workingFolderLevel": {
+          "type": "number",
+          "default": 2,
+          "description": "The level of the working folder."
+        },
+        "xitool-vscode.imagePathPattern": {
+          "type": "string",
+          "default": "./PIC/{filename}-pic/image-{datetime:YYYY-MM-DD-HH-mm-ss}{input}.png",
+          "description": "The path of the image. {filename} is the name of the file in which the image is inserted; {datetime:YYYY-MM-DD-HH-mm-ss} is the current time; {input} is the input from the user."
+        },
+        "xitool-vscode.imageInsertText": {
+          "type": "string",
+          "default": "![]({imagePath})",
+          "description": "The text to insert in the file. {imagePath} is the path of the image."
+        },
+        "xitool-vscode.MathJaxPath": {
+          "type": "string",
+          "default": "../ZResource/es5/tex-mml-chtml.js",
+          "description": "The path of the MathJax library."
+        },
+        "xitool-vscode.enableCite": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable the citation manager."
+        },
+        "xitool-vscode.bibtexPath": {
+          "type": "string",
+          "default": "",
+          "description": "The path of the bibtex library."
+        },
+        "xitool-vscode.ignoreFolder": {
+          "type": "array",
+          "default": [".git"],
+          "description": "The folder to ignore."
+        },
+        "xitool-vscode.enableDropImage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable the drop image feature."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "xitool-vscode",
+          "title": "XiTool-vscode",
+          "icon": "$(notebook)"
+        }
+      ]
+    },
+    "views": {
+      "xitool-vscode": [
+        {
+          "id": "fileNote",
+          "name": "Note File"
+        },
+        {
+          "id": "fileDrawio",
+          "name": "Drawio File"
+        },
+        {
+          "id": "imageUnused",
+          "name": "Unused Image"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "xitool-vscode.refreshUnusedImage",
+          "when": "view == imageUnused",
+          "group": "navigation"
+        },
+        {
+          "command": "xitool-vscode.refreshFileNote",
+          "when": "view == fileNote",
+          "group": "navigation"
+        },
+        {
+          "command": "xitool-vscode.refreshFileDrawio",
+          "when": "view == fileDrawio",
+          "group": "navigation"
+        },
+        {
+          "command": "xitool-vscode.addFolder",
+          "when": " view == fileNote || view == fileDrawio ",
+          "group": "navigation"
+        },
+        {
+          "command": "xitool-vscode.setNoteModeWork",
+          "when": "view == fileNote && xitool-vscode.noteModeClean",
+          "group": "navigation@1"
+        },
+        {
+          "command": "xitool-vscode.setNoteModeClean",
+          "when": "view == fileNote && !xitool-vscode.noteModeClean",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "xitool-vscode.deleteFile",
+          "when": " viewItem == ImageItem || viewItem == DrawioItem",
+          "group": "5_cutcopypaste"
+        },
+        {
+          "command": "xitool-vscode.deleteNoteHtml",
+          "when": " viewItem == NoteItem",
+          "group": "5_cutcopypaste"
+        },
+        {
+          "command": "xitool-vscode.deleteNoteMd",
+          "when": " viewItem == NoteItem",
+          "group": "5_cutcopypaste"
+        },
+        {
+          "command": "xitool-vscode.copyName",
+          "when": "viewItem == ImageItem",
+          "group": "2_workspace"
+        },
+        {
+          "command": "xitool-vscode.revealInFileExplorer",
+          "when": "view == fileNote || view == fileDrawio || view == imageUnused",
+          "group": "4_search"
+        },
+        {
+          "command": "xitool-vscode.replaceNoteMathJaxPath",
+          "when": " viewItem == NoteItem",
+          "icon": "$(replace)",
+          "group": "2_workspace"
+        },
+        {
+          "command": "xitool-vscode.createHtmlFile",
+          "when": " viewItem == NoteItem",
+          "icon": "$(create)",
+          "group": "2_workspace"
+        },
+        {
+          "command": "xitool-vscode.openNoteHtml",
+          "when": " viewItem == NoteItem",
+          "group": "inline"
+        },
+        {
+          "command": "xitool-vscode.openNoteInBrowser",
+          "when": " viewItem == NoteItem",
+          "group": "inline"
+        },
+        {
+          "command": "xitool-vscode.addFile",
+          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem",
+          "group": "inline"
+        },
+        {
+          "command": "xitool-vscode.addFolder",
+          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem",
+          "group": "inline"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "status.ItemCheck",
+        "description": "check",
+        "defaults": {
+          "light": "#05FF41",
+          "dark": "#05FF41"
+        }
+      },
+      {
+        "id": "status.ItemUnCheck",
+        "description": "uncheck",
+        "defaults": {
+          "light": "#FFD10D",
+          "dark": "#FFD10D"
+        }
+      },
+      {
+        "id": "status.ItemConflict",
+        "description": "conflict",
+        "defaults": {
+          "light": "#FF202F",
+          "dark": "#FF202F"
+        }
+      },
+      {
+        "id": "status.CleanMode",
+        "description": "cleanMode",
+        "defaults": {
+          "light": "#05FF41",
+          "dark": "#05FF41"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "dependencies": {
+    "@citation-js/core": "^0.7.14",
+    "@citation-js/plugin-bibtex": "^0.7.17",
+    "fs-extra": "^11.1.0",
+    "moment": "^2.30.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.x",
+    "@types/vscode": "^1.93.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.16.0"
+  }
+}
