@@ -19,7 +19,9 @@ Settings:
   - `{input}`: The input from the user.
 - `imageInsertText`: The text to insert in the file when pasting or dragging an image.`{imagePath}` will be replaced by the image path specified in `imagePathPattern`.
 
+Attention:
 
+- The name of images should not contain spaces or Chinese characters.
 
 ### Markdown
 
@@ -33,8 +35,11 @@ Settings:
 Settings:
 
 - `enableCite`: Whether to enable the citation auto-complete.
-- `bibtexPath`: The path of the bibtex library used for citation auto-complete. If left empty, the extension will search the working folder. If no bibtex file found, this feature will be disabled.
+- `bibtexPath`: The path of the bibtex library(.bib) used for citation auto-complete. If left empty, the extension will search the working folder. If no bibtex file found, this feature will be disabled.
 
+Attention:
+
+- Make sure each terms in the bibtex file has citation key.
 
 ### MathJax
 
