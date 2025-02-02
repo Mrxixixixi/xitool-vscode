@@ -9,6 +9,7 @@ const { initCommand ,generalStatus} = require('./common');
 const {FmObj} = require('./fileSystem');
 const {CiteObj} = require('./citeManager');
 const {DropImageProvider} = require('./dropImageProvider');
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
@@ -45,14 +46,19 @@ function activate(context) {
         }
     }));
 	console.log("addFolder init");
-	try{
-		const citeObj = new CiteObj(context);
-		console.log("CiteObj init");
-	}catch(e){
-		utils.Logger.error('CiteObj init error:'+e);
+	
+	// cite
+	if(utils.Config.getConfig("enableCite")){
+		try{
+			const citeObj = new CiteObj(context);
+			console.log("CiteObj init");
+		}catch(e){
+			utils.Logger.error('CiteObj init error:'+e);
+		}
+		new FileBibtexPj(context);
+		console.log("FileBibtexPj init");
 	}
-	const fileBibtexPj = new FileBibtexPj(context);
-	console.log("FileBibtexPj init");
+	
 
 	// mode 
 	context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.setNoteModeWork', () => {

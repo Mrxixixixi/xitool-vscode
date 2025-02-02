@@ -234,10 +234,6 @@ class FileManager{
         this.fileSt.shakeImage();
         return this;
     }
-
-
-
-
 }
 
 

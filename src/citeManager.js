@@ -93,9 +93,6 @@ class CiteCompletionProvider{
 
 class CiteObj{
     constructor(context){
-        if(!Config.getConfig("enableCite")){
-            return;
-        }
         const bibPath = this.getBibFilePath();
         if(bibPath.length == 0){
             utils.Logger.info("The bibtex library not found, cite feature is disabled.");
@@ -132,7 +129,5 @@ class CiteObj{
         }
     }
 }
-
-
 
 module.exports = {CiteObj};
