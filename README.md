@@ -6,8 +6,8 @@ A set of tools for markdown notebook.
 
 ### Image 
 
-1. paste image from clipboard
-2. drag and drop image to the editor
+1. paste image from clipboard, the default keybinding is `ctrl+alt+v`.
+2. drag and drop image to the editor (hold `shift` to drag and drop).
 3. filter unused images
 
 Settings:
