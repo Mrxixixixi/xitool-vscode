@@ -205,7 +205,8 @@ class FileManager{
     constructor(){
         this.updateRootPath();
         this.fileSt = new FileNode(this.rootPath,
-            {'Html':(name)=>name.endsWith('.html'),'Md':(name)=>name.endsWith('.md'),'Image':(name)=>/\.(png|jpg|jpeg|gif|bmp)$/i.test(name),'Drawio':(name)=>name.endsWith('.drawio')}
+            {'Html':(name)=>name.endsWith('.html'),'Md':(name)=>name.endsWith('.md'),'Image':(name)=>/\.(png|jpg|jpeg|gif|bmp)$/i.test(name),
+                'Drawio':(name)=>name.endsWith('.drawio'),'Bibtex':(name)=>name.endsWith('.bib')}
         );
     }
     init(){

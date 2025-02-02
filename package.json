@@ -115,6 +115,11 @@
         "command": "xitool-vscode.setNoteModeWork",
         "title": "Clean Mode",
         "icon": "$(coffee)"
+      },
+      {
+        "command": "xitool-vscode.reloadBibtex",
+        "title": "Reload Bibtex",
+        "icon": "$(refresh)"
       }
     ],
     "keybindings": [
@@ -193,6 +198,10 @@
         {
           "id": "imageUnused",
           "name": "Unused Image"
+        },
+        {
+          "id": "fileBibtex",
+          "name": "Bibtex File"
         }
       ]
     },
@@ -226,6 +235,11 @@
         {
           "command": "xitool-vscode.setNoteModeClean",
           "when": "view == fileNote && !xitool-vscode.noteModeClean",
+          "group": "navigation@1"
+        },
+        {
+          "command": "xitool-vscode.reloadBibtex",
+          "when": "view == fileBibtex",
           "group": "navigation@1"
         }
       ],

@@ -6,14 +6,22 @@ const mpath = require('path');
 const fs = require('fs');
 const utils = require("./utils");
 class CiteManager{
+    files = [];
+    cite = undefined;
     constructor(files){
+        this.loadFiles(files);
+    }
+
+    loadFiles(files){
         this.files = files;
         this.cite = new Cite(fs.readFileSync(files[0],'utf-8'),{forceType:"@bibtex/text"});
-        this.files.slice(1).forEach(file=>{
+        files.slice(1).forEach(file=>{
             this.cite.add(fs.readFileSync(file,'utf-8'));
         });
-        console.log(this.cite.data);
+        return this;
     }
+
+
     getCiteData(containedString){
         return this.cite.data.filter(item=>{            
             var cmpString = "";
@@ -96,6 +104,9 @@ class CiteObj{
         this.citeManager = new CiteManager(bibPath);
         const citeProvider = new CiteCompletionProvider(this.citeManager);
         context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown",citeProvider,'^'));
+        context.subscriptions.push(vscode.commands.registerCommand("xitool-vscode.reloadBibtex",()=>{
+            this.citeManager.loadFiles(this.getBibFilePath());
+        }));
     }
 
     getBibFilePath(){

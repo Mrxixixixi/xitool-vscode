@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const { ImageUnusedPj, FileDrawioPj } = require('./imageUnused');
+const { ImageUnusedPj, FileDrawioPj, FileBibtexPj } = require('./imageUnused');
 const { FileNotePj } = require('./fileNote');
 const { pasteImage } = require('./pasteImage');
 const utils = require('./utils');
@@ -51,6 +51,8 @@ function activate(context) {
 	}catch(e){
 		utils.Logger.error('CiteObj init error:'+e);
 	}
+	const fileBibtexPj = new FileBibtexPj(context);
+	console.log("FileBibtexPj init");
 
 	// mode 
 	context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.setNoteModeWork', () => {
