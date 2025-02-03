@@ -40,6 +40,13 @@ Settings:
 Attention:
 
 - Make sure each terms in the bibtex file has citation key.
+- To enable quick suggestion for Markdown, add into `settings.json`:
+
+```json
+"[markdown]": {
+  "editor.quickSuggestions": true
+}
+```
 
 ### MathJax
 
