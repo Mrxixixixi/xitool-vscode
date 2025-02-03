@@ -5,6 +5,7 @@ const {Config }=require("./utils");
 const mpath = require('path');
 const fs = require('fs');
 const utils = require("./utils");
+const {FileCiteTreeDataProvider} = require("./fileCite");
 class CiteManager{
     files = [];
     cite = undefined;
@@ -14,22 +15,26 @@ class CiteManager{
 
     loadFiles(files){
         this.files = files;
-        this.cite = new Cite(fs.readFileSync(files[0],'utf-8'),{forceType:"@bibtex/text"});
-        files.slice(1).forEach(file=>{
-            this.cite.add(fs.readFileSync(file,'utf-8'));
-        });
+        if (files.length > 0){
+            this.cite = new Cite(fs.readFileSync(files[0],'utf-8'),{forceType:"@bibtex/text"});
+            files.slice(1).forEach(file=>{
+                this.cite.add(fs.readFileSync(file,'utf-8'));
+            });
+        }else{
+            this.cite = undefined;
+        }
         return this;
     }
 
 
     getCiteData(containedString){
-        return this.cite.data.filter(item=>{            
+        return this.cite?this.cite.data.filter(item=>{            
             var cmpString = "";
             ["citation-key","title"].forEach(key=>{
                 item[key]?cmpString += item[key]:null;
             });
             return cmpString.toLowerCase().includes(containedString.toLowerCase());
-        });
+        }):[];
     }
 
     normalizeCiteData(item){
@@ -97,15 +102,20 @@ class CiteCompletionProvider{
 class CiteObj{
     constructor(context){
         const bibPath = this.getBibFilePath();
-        if(bibPath.length == 0){
-            utils.Logger.info("The bibtex library not found, cite feature is disabled.");
-            return;
-        }
         this.citeManager = new CiteManager(bibPath);
+        //complete
         const citeProvider = new CiteCompletionProvider(this.citeManager);
         context.subscriptions.push(vscode.languages.registerCompletionItemProvider("markdown",citeProvider,'^'));
+        //tree view
+        this.treeProvider = new FileCiteTreeDataProvider(context,{files:bibPath});
+        context.subscriptions.push(vscode.window.createTreeView('fileCite', {
+            treeDataProvider: this.treeProvider,
+        }));
+        //reload
         context.subscriptions.push(vscode.commands.registerCommand("xitool-vscode.reloadBibtex",()=>{
-            this.citeManager.loadFiles(this.getBibFilePath());
+            const bibPath = this.getBibFilePath();
+            this.citeManager.loadFiles(bibPath);
+            this.treeProvider.update({files:bibPath});
         }));
     }
 

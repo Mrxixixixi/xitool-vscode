@@ -36,6 +36,7 @@ Settings:
 
 - `enableCite`: Whether to enable the citation auto-complete.
 - `bibtexPath`: The path of the bibtex library(.bib) used for citation auto-complete. If left empty, the extension will search the working folder. If no bibtex file found, this feature will be disabled.
+- `citePattern`: The pattern of the citation. `{title}`, `{author}`, `{journal}`, `{date}`, `{DOI}`,`volume`,`page`.
 
 Attention:
 

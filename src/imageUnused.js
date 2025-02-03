@@ -80,39 +80,7 @@ class FileDrawioPj {
     }
 }
 
-// for bibtex
-class FileBibtexTreeDataProvider extends FileTreeDataProvider {
-    constructor(context){
-        super(context,'Bibtex',
-            (file,collapsibleState,options) => new FileBibtexItem(file,collapsibleState,options),
-        );
-    }
-}
-class FileBibtexItem extends FileItem {
-    constructor(label, collapsibleState, options){
-        super(label, collapsibleState, options);
-        if (this.isFile){
-            this.command = {
-                title: 'Open',
-                command: 'vscode.open',
-                arguments: [vscode.Uri.file(this.path)]
-            };
-        }
-    }
-}
-class FileBibtexPj {
-    constructor(context){
-        const treeProvider = new FileBibtexTreeDataProvider(context);
-        this.treeProvider = treeProvider;
-        this.treeViewer = vscode.window.createTreeView('fileBibtex', {
-            treeDataProvider: treeProvider,
-        });
-        context.subscriptions.push(this.treeViewer);
-    }
-}
-
 module.exports = {
     ImageUnusedPj,
-    FileDrawioPj,
-    FileBibtexPj
+    FileDrawioPj
 }

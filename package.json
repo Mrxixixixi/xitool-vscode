@@ -207,11 +207,17 @@
           "name": "Unused Image"
         },
         {
-          "id": "fileBibtex",
+          "id": "fileCite",
           "name": "Bibtex File"
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "fileCite",
+        "contents": "no bibtex file found"
+      }
+    ],
     "menus": {
       "view/title": [
         {
@@ -246,7 +252,7 @@
         },
         {
           "command": "xitool-vscode.reloadBibtex",
-          "when": "view == fileBibtex",
+          "when": "view == fileCite",
           "group": "navigation@1"
         }
       ],
@@ -273,7 +279,7 @@
         },
         {
           "command": "xitool-vscode.revealInFileExplorer",
-          "when": "view == fileNote || view == fileDrawio || view == imageUnused",
+          "when": "view == fileNote || view == fileDrawio || view == imageUnused || view == fileCite",
           "group": "4_search"
         },
         {

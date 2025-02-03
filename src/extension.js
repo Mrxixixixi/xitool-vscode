@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const { ImageUnusedPj, FileDrawioPj, FileBibtexPj } = require('./imageUnused');
+const { ImageUnusedPj, FileDrawioPj} = require('./imageUnused');
 const { FileNotePj } = require('./fileNote');
 const { pasteImage } = require('./pasteImage');
 const utils = require('./utils');
@@ -50,13 +50,11 @@ function activate(context) {
 	// cite
 	if(utils.Config.getConfig("enableCite")){
 		try{
-			const citeObj = new CiteObj(context);
+			new CiteObj(context);
 			console.log("CiteObj init");
 		}catch(e){
 			utils.Logger.error('CiteObj init error:'+e);
 		}
-		new FileBibtexPj(context);
-		console.log("FileBibtexPj init");
 	}
 	
 
