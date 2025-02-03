@@ -164,6 +164,11 @@
           "default": "",
           "description": "The path of the bibtex library."
         },
+        "xitool-vscode.citePattern": {
+          "type": "string",
+          "default": "{title}, {author}, {journal}({date}) [DOI]({DOI})",
+          "description": "The pattern of the citation."
+        },
         "xitool-vscode.ignoreFolder": {
           "type": "array",
           "default": [

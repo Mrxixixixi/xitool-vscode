@@ -40,14 +40,17 @@ class CiteManager{
             "DOI": item["DOI"]? item["DOI"].startsWith("http")? item["DOI"]:`https://doi.org/${item["DOI"]}`:'',
             "title": item["title"]? item["title"]:"",
             "citation-key": item["citation-key"]? item["citation-key"]:"",
+            "volume": item["volume"]? item["volume"]:"",
+            "page": item["page"]? item["page"]:""
         };
         return nitem;
     }
     // format cite data for provider
     formatCiteData(nitem){
-        const doiField = nitem["DOI"]? `[DOI](${nitem["DOI"]})`:''
-        const dateField = nitem["date"]? `(${nitem["date"]})`:'';
-        return `[^${nitem["citation-key"]}]:${nitem["title"]}, ${nitem["author"]}, ${nitem["journal"]}${dateField} ${doiField}`;
+        const pattern = "[^"+nitem["citation-key"]+"]: "+Config.getConfig("citePattern");
+        return pattern.replace("{title}",nitem["title"]).replace("{author}",nitem["author"])
+        .replace("{journal}",nitem["journal"]).replace("{date}",nitem["date"])
+        .replace("{DOI}",nitem["DOI"]).replace("{volume}",nitem["volume"]).replace("{page}",nitem["page"]);
     }
     docCiteData(nitem){
         return new vscode.MarkdownString(`${nitem["title"]}\n- ${nitem["author"]}\n- [DOI](${nitem["DOI"]}) ${nitem["journal"]}(${nitem["date"]})`);
