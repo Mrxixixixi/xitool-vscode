@@ -15,7 +15,7 @@ Settings:
 - `enableDropImage`: Enable the drag and drop image feature.
 - `imagePathPattern`: The image path for pasted and dragged images.
   - `{filename}`: The name of the file in which the image is inserted.
-  - `{datetime:YYYY-MM-DD-HH-mm-ss}`: The current time.
+  - `{datetime:yyyy-LL-dd-hh-mm-ss}`: The current time. Ref to https://luxon.nodejs.cn/formatting for other supported formats.
   - `{input}`: The input from the user.
 - `imageInsertText`: The text to insert in the file when pasting or dragging an image.`{imagePath}` will be replaced by the image path specified in `imagePathPattern`.
 
