@@ -5,8 +5,7 @@ const child_process = require('child_process');
 const fs = require('fs');
 const fse = require('fs-extra');
 const mpath = require('path');
-const moment = require('moment');
-
+const {DateTime} = require('luxon');
 
 class Logger {
 	static channel;
@@ -150,7 +149,7 @@ async function getImageFFNAbs(isOnlyPath=false) {
 
 	// handle image name
 	const imagePathPattern = Config.getConfig('imagePathPattern');
-	const datetime = moment().format( imagePathPattern.match('{datetime:(.+?)}')[1]);
+	const datetime = DateTime.now().toFormat( imagePathPattern.match('{datetime:(.+?)}')[1]);
 	var imagePath = imagePathPattern.replace('{filename}', parsedFileName.name).
 		replace(/{datetime:(.+?)}/, datetime);	
 
