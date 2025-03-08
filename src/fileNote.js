@@ -43,7 +43,7 @@ class FileNoteItem extends FileItem {
             if (this.data.hasMd){
                 await utils.createHtmlFile(this.getMdPath());                
             }else{
-                vscode.window.showErrorMessage(`${this.label}.md not found.`);
+                utils.Logger.error(`${this.label}.md not found.`);
                 return this;
             }
         }else{
@@ -59,9 +59,9 @@ class FileNoteItem extends FileItem {
         if (this.isFile){
             if (this.data.hasHtml){
                 utils.replaceMathJaxPath(this.getHtmlPath());
-                vscode.window.showInformationMessage(`Replace MathJax path for ${this.label}.html successfully.`);
+                utils.Logger.info(`Replace MathJax path for ${this.label}.html successfully.`);
             }else{
-                vscode.window.showErrorMessage(`${this.label}.html not found.`);
+                utils.Logger.error(`${this.label}.html not found.`);
                 
             }
         }else{

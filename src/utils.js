@@ -92,6 +92,7 @@ async function createHtmlFile(path){
 		vscode.commands.executeCommand('_crossnote.htmlExport',filepath,true).then(() => {
 			setTimeout(() => {
 				console.log("createHtmlFile filepath:",filepath);
+				Logger.info(`Create ${path.replace('.md','.html')} successfully.`);
 				replaceMathJaxPath(path.replace('.md','.html'));
 			}, 500);
 		});
