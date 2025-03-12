@@ -87,21 +87,15 @@ async function createHtmlFile(path){
 	if (!path.endsWith('.md')){
 		return;
 	}
-	try{
-		const filepath = mpath.join('file:///',path);
-		vscode.commands.executeCommand('_crossnote.htmlExport',filepath,true).then(() => {
-			setTimeout(() => {
-				console.log("createHtmlFile filepath:",filepath);
-				Logger.info(`Create ${path.replace('.md','.html')} successfully.`);
-				replaceMathJaxPath(path.replace('.md','.html'));
-			}, 500);
-		});
-		return true;
-	}catch(e){
-		console.log(e);
-		Logger.info("Please activate Markdown Preview Enhanced extension(try open a md file)");
-		return false;
-	}
+	const filepath ='file:///'+path;
+	vscode.commands.executeCommand('_crossnote.htmlExport',filepath,true).then(() => {
+		setTimeout(() => {
+			console.log("createHtmlFile filepath:",filepath);
+			// Logger.info(` Create ${path.replace('.md','.html')} successfully.`);
+			replaceMathJaxPath(path.replace('.md','.html'));
+		}, 500);
+	});
+	return true;
 }
 
 function getAllFile(rootPath,validate){
