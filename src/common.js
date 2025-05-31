@@ -18,6 +18,7 @@ const cl = {
     itemUnCheck: new vscode.ThemeColor("status.ItemUnCheck"),
     itemConflict: new vscode.ThemeColor("status.ItemConflict"),
     cleanMode: new vscode.ThemeColor("status.CleanMode"),
+    mark: new vscode.ThemeColor("status.Mark")
 }
 
 class GeneralStatus{

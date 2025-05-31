@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 const { ImageUnusedPj, FileDrawioPj,FileCodePj,FileOtherPj} = require('./fileSimple');
 const { FileNotePj } = require('./fileNote');
+const {OutlinePj} = require('./outlineProvider');
 const { pasteImage } = require('./pasteImage');
 const utils = require('./utils');
 const { initCommand ,generalStatus} = require('./common');
@@ -42,6 +43,7 @@ function activate(context) {
 	// for sidebar file other 
 	const fileOtherPj = new FileOtherPj(context);
 	console.log("FileOtherPj init");
+	const outlinePj = new OutlinePj(context);
 	context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.addFolder', (item) => {
         if (item){
             item.addFolder();
