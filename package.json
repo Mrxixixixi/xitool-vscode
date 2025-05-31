@@ -2,7 +2,7 @@
   "name": "xitool-vscode",
   "displayName": "XiTool-vscode",
   "description": "A set of tools for markdown notebook",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "icon": "res/icons/icon2.png",
   "publisher": "Mrxixixixi",
   "engines": {
@@ -30,7 +30,7 @@
       {
         "command": "xitool-vscode.revealOutline",
         "title": "Reveal section in outline",
-        "icon":"$(arrow-right)"
+        "icon": "$(arrow-right)"
       },
       {
         "command": "xitool-vscode.revealLine",
@@ -383,11 +383,11 @@
     "colors": [
       {
         "id": "status.ItemCheck",
-        "description": "check",        
+        "description": "check",
         "defaults": {
           "light": "#05FF41",
           "dark": "#05FF41"
-        }      
+        }
       },
       {
         "id": "status.ItemUnCheck",
@@ -395,7 +395,7 @@
         "defaults": {
           "light": "#FFD10D",
           "dark": "#FFD10D",
-          "highContrast":"#FFD10D"
+          "highContrast": "#FFD10D"
         }
       },
       {
@@ -420,7 +420,7 @@
         "defaults": {
           "light": "#e8e511",
           "dark": "#e8e511",
-          "highContrast":"#FFD10D"
+          "highContrast": "#FFD10D"
         }
       }
     ]
