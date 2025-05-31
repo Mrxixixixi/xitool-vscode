@@ -37,6 +37,16 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "xitool-vscode.refreshCode",
+        "title": "Refresh Code",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "xitool-vscode.refreshOther",
+        "title": "Refresh Other",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "xitool-vscode.deleteFile",
         "title": "Delete",
         "icon": "$(trash)"
@@ -176,6 +186,20 @@
           ],
           "description": "The folder to ignore."
         },
+        "xitool-vscode.codeExtension": {
+          "type": "array",
+          "default": [
+            ".m"
+          ],
+          "description": "The files with these extensions will be put in Code File view."
+        },
+        "xitool-vscode.otherExtension": {
+          "type": "array",
+          "default": [
+            ".hsnips"
+          ],
+          "description": "The file with these extensions will be put in Other File view."
+        },
         "xitool-vscode.enableDropImage": {
           "type": "boolean",
           "default": true,
@@ -203,12 +227,20 @@
           "name": "Drawio File"
         },
         {
+          "id": "fileCode",
+          "name": "Code File"
+        },
+        {
           "id": "imageUnused",
           "name": "Unused Image"
         },
         {
           "id": "fileCite",
           "name": "Bibtex File"
+        },
+        {
+          "id": "fileOther",
+          "name": "Other File"
         }
       ]
     },
@@ -236,8 +268,18 @@
           "group": "navigation"
         },
         {
+          "command": "xitool-vscode.refreshCode",
+          "when": "view == fileCode",
+          "group": "navigation"
+        }
+        {
+          "command": "xitool-vscode.refreshOther",
+          "when": "view == fileOther",
+          "group": "navigation"
+        }
+        {
           "command": "xitool-vscode.addFolder",
-          "when": " view == fileNote || view == fileDrawio ",
+          "when": " view == fileNote || view == fileDrawio || view == fileCode  ",
           "group": "navigation"
         },
         {
@@ -279,7 +321,7 @@
         },
         {
           "command": "xitool-vscode.revealInFileExplorer",
-          "when": "view == fileNote || view == fileDrawio || view == imageUnused || view == fileCite",
+          "when": "view == fileNote || view == fileDrawio || view == imageUnused || view == fileCite || view == fileCode|| view == fileOther",
           "group": "4_search"
         },
         {
@@ -306,12 +348,12 @@
         },
         {
           "command": "xitool-vscode.addFile",
-          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem",
+          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem || viewItem == CodeFolderItem",
           "group": "inline"
         },
         {
           "command": "xitool-vscode.addFolder",
-          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem",
+          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem || viewItem == CodeFolderItem",
           "group": "inline"
         }
       ]

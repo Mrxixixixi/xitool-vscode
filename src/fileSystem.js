@@ -204,9 +204,12 @@ class FileManager{
     shakeImageFunc = undefined;
     constructor(){
         this.updateRootPath();
+        const codeExtList = utils.Config.getConfig('codeExtension');
+        const otherExtList = utils.Config.getConfig('otherExtension');
         this.fileSt = new FileNode(this.rootPath,
             {'Html':(name)=>name.endsWith('.html'),'Md':(name)=>name.endsWith('.md'),'Image':(name)=>/\.(png|jpg|jpeg|gif|bmp)$/i.test(name),
-                'Drawio':(name)=>name.endsWith('.drawio'),'Bibtex':(name)=>name.endsWith('.bib')}
+                'Drawio':(name)=>name.endsWith('.drawio'),'Bibtex':(name)=>name.endsWith('.bib'),
+                'Code':(name)=>codeExtList.some(ending=>name.endsWith(ending)),'Other':(name)=>otherExtList.some(ending=>name.endsWith(ending))}
         );
     }
     init(){

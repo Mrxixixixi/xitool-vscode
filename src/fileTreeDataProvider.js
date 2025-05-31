@@ -86,6 +86,11 @@ class FileItem extends vscode.TreeItem {
         this.tooltip = this.path;
         if(this.isFile){ 
             this.contextValue = `${this.fileType}Item`;
+            this.command = {
+                    title: 'Open',
+                    command: 'vscode.open',
+                    arguments: [vscode.Uri.file(this.path)]
+                };
         }else{
             this.contextValue = `${this.fileType}FolderItem`;
         }
@@ -134,6 +139,9 @@ class FileItem extends vscode.TreeItem {
                     break;
                 case 'Drawio':
                     filePath = mpath.join(this.path, `${fileName}.drawio`);
+                    break;
+                default:
+                    filePath = mpath.join(this.path, fileName);
                     break;
             }
             fs.writeFileSync(filePath, '', 'utf8'); 
