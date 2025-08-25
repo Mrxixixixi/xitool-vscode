@@ -1,8 +1,14 @@
 const vscode = require('vscode');
+const utils = require('./utils');
 
 function initCommand(context){
     context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.revealInFileExplorer', (item) => {
         vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(item.getPath()));
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.revealPicFolder', async (item) => {
+        const picFolderPath = utils.getPicFolderPath(item.getPath()).absolute;
+        await utils.createDir(picFolderPath);
+        vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(picFolderPath));
     }));
     context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.openSource', (item) => {
         vscode.commands.executeCommand('vscode.open', vscode.Uri.file(item.getPath()));

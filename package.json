@@ -71,6 +71,11 @@
         "icon": "$(file-explorer)"
       },
       {
+        "command": "xitool-vscode.revealPicFolder",
+        "title": "Reveal Pic Folder",
+        "icon": "$(file-explorer)"
+      },
+      {
         "command": "xitool-vscode.openSource",
         "title": "Open Source",
         "icon": "$(file-code)"
@@ -344,6 +349,11 @@
         {
           "command": "xitool-vscode.revealInFileExplorer",
           "when": "view == fileNote || view == fileDrawio || view == imageUnused || view == fileCite || view == fileCode|| view == fileOther",
+          "group": "4_search"
+        },
+        {
+          "command": "xitool-vscode.revealPicFolder",
+          "when": "view == fileNote",
           "group": "4_search"
         },
         {

@@ -127,7 +127,13 @@ function createDir(dirpath) {
 	});
 }
 
-
+function getPicFolderPath(filepath){
+	const imagePathPattern = Config.getConfig('imagePathPattern');
+	const parsedFileName = mpath.parse(filepath);
+	const parsedPicPath = imagePathPattern.replace('{filename}', parsedFileName.name);
+	const picFolderPath = mpath.join(parsedFileName.dir,parsedPicPath.dir);
+	return {relative:parsedPicPath.dir,absolute:picFolderPath};
+}
 
 async function getImageFFNAbs(isOnlyPath=false) {
 	// get file name
@@ -166,4 +172,4 @@ async function getImageFFNAbs(isOnlyPath=false) {
 	return {imagePath:imagePath,imagePathAbs:imagePathAbs};
 }
 
-module.exports = { Logger, Config, openInBrowser, replaceText, replaceMathJaxPath,createHtmlFile,getAllFile,createDir,getImageFFNAbs };
+module.exports = { Logger, Config, openInBrowser, replaceText, replaceMathJaxPath,createHtmlFile,getAllFile,createDir,getImageFFNAbs,getPicFolderPath };
