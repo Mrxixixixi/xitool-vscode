@@ -50,7 +50,7 @@ class OutlineProvider {
             }
             
             // Parse all headers first
-            for (let i = totalLines-1; i >0; i--) {
+            for (let i = totalLines-1; i >-1; i--) {
                 const match = document.lineAt(i).text.trim().match(/^(#{1,6})\s+(.+)$/);
                 if (!match) {
                     continue; // Skip lines that are not headers
