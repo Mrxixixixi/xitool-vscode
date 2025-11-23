@@ -62,19 +62,8 @@ function replaceText(path,oldText,newText){
 	return true;
 }
 
-// function replaceAllMathJaxPath(item){
-// 	if (item.isFile){
-// 		replaceMathJaxPath(item.path);
-// 	}else{
-// 		const allFiles = getAllFile(item.path,file => file.endsWith('.html'));
-// 		allFiles.forEach(file => {
-// 			replaceMathJaxPath(file.path);
-// 		});    
-// 	}
-// }
 
 function replaceMathJaxPath(path){
-	console.log("replaceMathJaxPath path:",path);
     const mathJaxPath = Config.getConfig('MathJaxPath');
     if (!mathJaxPath || mathJaxPath.length == 0){
         return;
@@ -82,6 +71,8 @@ function replaceMathJaxPath(path){
     replaceText(path,/<script type="text\/javascript" async="" src="(.+).js"/,`<script type="text/javascript" async="" src="${mathJaxPath}"`);
 }
 
+// Constants
+const HTML_EXPORT_DELAY = 500;
 
 async function createHtmlFile(path){
 	if (!path.endsWith('.md')){
@@ -90,10 +81,8 @@ async function createHtmlFile(path){
 	const filepath ='file:///'+path;
 	vscode.commands.executeCommand('_crossnote.htmlExport',filepath,true).then(() => {
 		setTimeout(() => {
-			console.log("createHtmlFile filepath:",filepath);
-			// Logger.info(` Create ${path.replace('.md','.html')} successfully.`);
 			replaceMathJaxPath(path.replace('.md','.html'));
-		}, 500);
+		}, HTML_EXPORT_DELAY);
 	});
 	return true;
 }

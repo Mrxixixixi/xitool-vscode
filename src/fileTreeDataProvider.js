@@ -4,20 +4,22 @@ const mpath = require('path');
 const cm = require("./common");
 const utils = require('./utils');
 const fs = require('fs');
+
+// Constants
+const FILE_UPDATE_DELAY = 500;
+const FILE_DELETE_DELAY = 1000;
 class FileTreeDataProvider{
-    rootPath = FmObj.getRootPath(); // path of the root folder
-     // md files
     constructor(context,fileType,funcGetItem) {
         this.fileType = fileType;
         this.funcGetItem = funcGetItem;
-        this.refresh();    
-        
     }
 
     getTreeItem(element) {
         return element;
     }
     getChildren(element) {
+        // Ensure file system is initialized before accessing (lazy init)
+        // Accessing FmObj.fileSt will trigger initialization if needed
         if (!element) {
             element = {data:FmObj.fileSt,path:FmObj.rootPath};
         }
@@ -26,19 +28,18 @@ class FileTreeDataProvider{
 
     getChildrenFileItem(element) {
         const fst = element.data;
-        const rootPath = element.path;
         const fileItem = [];
-        for(const file in fst[this.fileType]){
+        Object.keys(fst[this.fileType]).forEach(file=>{
             fileItem.push(this.funcGetItem(file,vscode.TreeItemCollapsibleState.None,
-                {path:mpath.join(rootPath,file),data:fst[this.fileType][file],isFile:true,fileType:this.fileType,parent:fst,provider:this}));
-        }
-        for(const folder in fst.subfolders){ 
+                {data:fst[this.fileType][file],isFile:true,fileType:this.fileType,parent:fst,provider:this}));
+        });
+        Object.keys(fst.subfolders).forEach(folder=>{
             if (!this.validateFolder(fst.subfolders[folder])){
-                continue;
+                return;
             }
             fileItem.push(this.funcGetItem(folder,vscode.TreeItemCollapsibleState.Collapsed,
-                {path:mpath.join(rootPath,folder),data:fst.subfolders[folder],isFile:false,fileType:this.fileType,parent:fst,provider:this}));
-        }
+                {data:fst.subfolders[folder],isFile:false,fileType:this.fileType,parent:fst,provider:this}));
+        });
         return fileItem;
     }
 
@@ -77,41 +78,30 @@ class FileTreeDataProvider{
 class FileItem extends vscode.TreeItem {
     constructor(label,collapsibleState,options) {
         super(label,collapsibleState);
-        this.path = options.path;
         this.data = options.data;
         this.isFile = options.isFile;
         this.fileType = options.fileType;
         this.parent = options.parent;
         this.provider = options.provider;
-        this.tooltip = this.path;
+        this.tooltip = this.getPath();
         if(this.isFile){ 
             this.contextValue = `${this.fileType}Item`;
             this.command = {
                     title: 'Open',
                     command: 'vscode.open',
-                    arguments: [vscode.Uri.file(this.path)]
+                    arguments: [vscode.Uri.file(this.getPath())]
                 };
         }else{
             this.contextValue = `${this.fileType}FolderItem`;
         }
-        if(this.contextValue != 'NoteItem'){return;}
-        switch(this.data.status){
-            case 'check':
-                this.iconPath = new vscode.ThemeIcon("circle-filled",cm.cl.itemCheck);
-                break;
-            case 'uncheck':
-                this.iconPath = new vscode.ThemeIcon("circle-filled",cm.cl.itemUnCheck);
-                break;
-            case 'conflict':
-                this.iconPath = new vscode.ThemeIcon("circle-filled",cm.cl.itemConflict);
-                break;
-            case 'none':
-                this.iconPath = new vscode.ThemeIcon("circle-outline");
-                break;
-        }
     }
     getPath(){
-        return this.path;
+        return this.data.path;
+    }
+
+    // Helper: Validate note file extension
+    isValidNoteExtension(fileName) {
+        return fileName.endsWith('.drawio') || fileName.endsWith('.drawio.png') || fileName.endsWith('.drawio.svg') || fileName.endsWith('.html') || fileName.endsWith('.md');
     }
     
     update(type = this.fileType){
@@ -126,37 +116,27 @@ class FileItem extends vscode.TreeItem {
     async addFile(){
         if (!this.isFile){
             const fileName = await vscode.window.showInputBox({
-                prompt: 'Enter the file name(without extension)',
+                prompt: 'Enter the file name(with extension .md, .drawio, .drawio.png, .drawio.svg)',
                 placeHolder: 'filename'
             });
             if (!fileName || fileName.length == 0) {
                 return;
             }
-            let filePath = '';
-            switch(this.fileType){
-                case 'Note':
-                    filePath = mpath.join(this.path, `${fileName}.md`);
-                    break;
-                case 'Drawio':
-                    filePath = mpath.join(this.path, `${fileName}.drawio`);
-                    break;
-                default:
-                    filePath = mpath.join(this.path, fileName);
-                    break;
+            const filePath = mpath.join(this.getPath(), fileName);
+            
+            // Validate file extension for Note type
+            if (this.fileType === 'Note' && !this.isValidNoteExtension(fileName)) {
+                vscode.window.showErrorMessage('Invalid extension: Only .drawio and .md are valid for Note files.');
+                return;
             }
             fs.writeFileSync(filePath, '', 'utf8'); 
             setTimeout(() => {
-                if (this.fileType === 'Note'){
-                    this.update('Md');
-                }else{
-                    this.update();
-                }
+                this.update();
                 this.provider.refreshUI();
-            }, 500);
+            }, FILE_UPDATE_DELAY);
+
+            vscode.commands.executeCommand('vscode.open', vscode.Uri.file(filePath));
             
-            vscode.workspace.openTextDocument(vscode.Uri.file(filePath)).then(doc => {
-                vscode.window.showTextDocument(doc);
-            });
         }
         return this;
     }
@@ -167,9 +147,9 @@ class FileItem extends vscode.TreeItem {
         return this;
     }
 
-    async deleteFile(filePath=this.path){
+    async deleteFile(filePath=this.getPath()){
         const result = await vscode.window.showWarningMessage(
-            `Are you sure you want to delete ${mpath.basename(filePath)}?`,
+            `Are you sure you want to delete ${filePath}?`,
             { modal: true },
             'Yes',
             'No'
@@ -179,19 +159,9 @@ class FileItem extends vscode.TreeItem {
         }
         fs.unlinkSync(filePath);
         setTimeout(() => {
-            switch(mpath.extname(filePath)){
-                case '.md':
-                    this.update('Md');
-                    break;
-                case '.html':
-                    this.update('Html');
-                    break;
-                default:
-                    this.update();
-                    break;
-            }
+            this.update();
             this.provider.refreshUI();
-        }, 1000);
+        }, FILE_DELETE_DELAY);
         return this;
     }
 }

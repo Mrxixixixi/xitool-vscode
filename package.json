@@ -28,11 +28,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "xitool-vscode.revealOutline",
-        "title": "Reveal section in outline",
-        "icon": "$(arrow-right)"
-      },
-      {
         "command": "xitool-vscode.revealLine",
         "title": "Reveal line in editor"
       },
@@ -106,11 +101,6 @@
         "icon": "$(trash)"
       },
       {
-        "command": "xitool-vscode.deleteNoteMd",
-        "title": "Delete Md File",
-        "icon": "$(trash)"
-      },
-      {
         "command": "xitool-vscode.addFile",
         "title": "Add File",
         "icon": "$(file-add)"
@@ -118,11 +108,6 @@
       {
         "command": "xitool-vscode.refreshFileNote",
         "title": "Refresh File Note",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "xitool-vscode.refreshFileDrawio",
-        "title": "Refresh File Drawio",
         "icon": "$(refresh)"
       },
       {
@@ -144,6 +129,11 @@
         "command": "xitool-vscode.reloadBibtex",
         "title": "Reload Bibtex",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "xitool-vscode.copyRelativePath",
+        "title": "Copy Relative Path",
+        "icon": "$(copy)"
       }
     ],
     "keybindings": [
@@ -237,10 +227,6 @@
           "name": "Note File"
         },
         {
-          "id": "fileDrawio",
-          "name": "Drawio File"
-        },
-        {
           "id": "fileCode",
           "name": "Code File"
         },
@@ -285,11 +271,6 @@
           "group": "navigation"
         },
         {
-          "command": "xitool-vscode.refreshFileDrawio",
-          "when": "view == fileDrawio",
-          "group": "navigation"
-        },
-        {
           "command": "xitool-vscode.refreshCode",
           "when": "view == fileCode",
           "group": "navigation"
@@ -300,13 +281,8 @@
           "group": "navigation"
         },
         {
-          "command": "xitool-vscode.revealOutline",
-          "when": "view == moutline",
-          "group": "navigation"
-        },
-        {
           "command": "xitool-vscode.addFolder",
-          "when": " view == fileNote || view == fileDrawio || view == fileCode  ",
+          "when": " view == fileNote || view == fileCode  ",
           "group": "navigation"
         },
         {
@@ -328,16 +304,11 @@
       "view/item/context": [
         {
           "command": "xitool-vscode.deleteFile",
-          "when": " viewItem == ImageItem || viewItem == DrawioItem",
+          "when": " viewItem == ImageItem || viewItem == NoteItem || viewItem == NoteDrawioItem",
           "group": "5_cutcopypaste"
         },
         {
           "command": "xitool-vscode.deleteNoteHtml",
-          "when": " viewItem == NoteItem",
-          "group": "5_cutcopypaste"
-        },
-        {
-          "command": "xitool-vscode.deleteNoteMd",
           "when": " viewItem == NoteItem",
           "group": "5_cutcopypaste"
         },
@@ -348,12 +319,12 @@
         },
         {
           "command": "xitool-vscode.revealInFileExplorer",
-          "when": "view == fileNote || view == fileDrawio || view == imageUnused || view == fileCite || view == fileCode|| view == fileOther",
+          "when": "view == fileNote || view == NoteDrawioItem || view == imageUnused || view == fileCite || view == fileCode|| view == fileOther",
           "group": "4_search"
         },
         {
           "command": "xitool-vscode.revealPicFolder",
-          "when": "view == fileNote",
+          "when": "viewItem == NoteItem",
           "group": "4_search"
         },
         {
@@ -380,13 +351,18 @@
         },
         {
           "command": "xitool-vscode.addFile",
-          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem || viewItem == CodeFolderItem",
+          "when": " viewItem == NoteFolderItem  || viewItem == CodeFolderItem",
           "group": "inline"
         },
         {
           "command": "xitool-vscode.addFolder",
-          "when": " viewItem == NoteFolderItem || viewItem == DrawioFolderItem || viewItem == CodeFolderItem",
+          "when": " viewItem == NoteFolderItem  || viewItem == CodeFolderItem",
           "group": "inline"
+        },
+        {
+          "command": "xitool-vscode.copyRelativePath",
+          "when": " viewItem == NoteItem || viewItem == NoteDrawioItem",
+          "group": "2_workspace"
         }
       ]
     },

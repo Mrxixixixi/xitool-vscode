@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const { ImageUnusedPj, FileDrawioPj,FileCodePj,FileOtherPj} = require('./fileSimple');
+const { ImageUnusedPj,FileCodePj,FileOtherPj} = require('./fileSimple');
 const { FileNotePj } = require('./fileNote');
 const {OutlinePj} = require('./outlineProvider');
 const { pasteImage } = require('./pasteImage');
@@ -26,40 +26,31 @@ function activate(context) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.pasteImage', pasteImage));
 	initCommand(context);
-	console.log("initCommand init");
 
 	// for sidebar unused image
 	const imageUnusedPj = new ImageUnusedPj(context);
-	console.log("ImageUnusedPj init");
 	// for sidebar file note
 	const fileNotePj = new FileNotePj(context);
-	console.log("FileNotePj init");
-	// for sidebar file drawio
-	const fileDrawioPj = new FileDrawioPj(context);
-	console.log("FileDrawioPj init");
 	// for sidebar file code 
 	const fileCodePj = new FileCodePj(context);
-	console.log("FileCodePj init");
 	// for sidebar file other 
 	const fileOtherPj = new FileOtherPj(context);
-	console.log("FileOtherPj init");
 	const outlinePj = new OutlinePj(context);
 	context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.addFolder', (item) => {
         if (item){
             item.addFolder();
         }else{
+            // Ensure file system is initialized before accessing fileSt
+            FmObj.init();
             FmObj.fileSt.addFolder();
             fileNotePj.treeProvider.refreshUI();
-            fileDrawioPj.treeProvider.refreshUI();
         }
     }));
-	console.log("addFolder init");
 	
 	// cite
 	if(utils.Config.getConfig("enableCite")){
 		try{
 			new CiteObj(context);
-			console.log("CiteObj init");
 		}catch(e){
 			utils.Logger.error('CiteObj init error:'+e);
 		}
@@ -70,22 +61,17 @@ function activate(context) {
         vscode.commands.executeCommand('setContext', 'xitool-vscode.noteModeClean', false);
         generalStatus.setNoteModeClean(false);
 		fileNotePj.treeProvider.refreshUI();
-		fileDrawioPj.treeProvider.refreshUI();
     }));
     context.subscriptions.push(vscode.commands.registerCommand('xitool-vscode.setNoteModeClean', () => {
         vscode.commands.executeCommand('setContext', 'xitool-vscode.noteModeClean', true);
         generalStatus.setNoteModeClean(true);
 		fileNotePj.treeProvider.refreshUI();
-		fileDrawioPj.treeProvider.refreshUI();
     }));
     vscode.commands.executeCommand('xitool-vscode.setNoteModeClean');
-	console.log("setNoteModeClean init");
 	// drop image to vscode
 	if (utils.Config.getConfig('enableDropImage')){
-		console.log('enableDropImage',utils.Config.getConfig('enableDropImage'));
 		const dropImageProvider = new DropImageProvider(context);
 		context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('markdown',dropImageProvider));
-		console.log("DropImageProvider init");
 	}
 }
 // This method is called when your extension is deactivated
