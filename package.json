@@ -2,7 +2,7 @@
   "name": "xitool-vscode",
   "displayName": "XiTool-vscode",
   "description": "A set of tools for markdown notebook",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "icon": "res/icons/icon2.png",
   "publisher": "Mrxixixixi",
   "engines": {
@@ -307,7 +307,7 @@
         }
       ],
       "view/item/context": [
-        { 
+        {
           "command": "xitool-vscode.addForCite",
           "when": " viewItem == CiteItem",
           "group": "2_workspace"
