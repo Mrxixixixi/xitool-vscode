@@ -32,6 +32,11 @@
         "title": "Reveal line in editor"
       },
       {
+        "command": "xitool-vscode.addForCite",
+        "title": "Add for Cite",
+        "icon": "$(file-add)"
+      },
+      {
         "command": "xitool-vscode.pasteImage",
         "title": "Paste Image"
       },
@@ -302,6 +307,11 @@
         }
       ],
       "view/item/context": [
+        { 
+          "command": "xitool-vscode.addForCite",
+          "when": " viewItem == CiteItem",
+          "group": "2_workspace"
+        },
         {
           "command": "xitool-vscode.deleteFile",
           "when": " viewItem == ImageItem || viewItem == NoteItem || viewItem == NoteDrawioItem",
@@ -422,7 +432,7 @@
     "package": " node esbuild.js --production"
   },
   "dependencies": {
-    "@citation-js/core": "^0.7.14",
+    "@citation-js/core": "^0.7.21",
     "@citation-js/plugin-bibtex": "^0.7.17",
     "fs-extra": "^11.1.0",
     "luxon": "^3.5.0",

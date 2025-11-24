@@ -10,19 +10,24 @@ class CiteManager{
     files = [];
     cite = undefined;
     constructor(files){
-        this.loadFiles(files);
+        this.cite = new Cite();
+        this.addFile(files);
     }
 
-    loadFiles(files){
-        this.files = files;
-        if (files.length > 0){
-            this.cite = new Cite(fs.readFileSync(files[0],'utf-8'),{forceType:"@bibtex/text"});
-            files.slice(1).forEach(file=>{
-                this.cite.add(fs.readFileSync(file,'utf-8'));
-            });
-        }else{
-            this.cite = undefined;
-        }
+    addFile(files){
+        files.forEach(file=>{
+            if(this.files.includes(file)){
+                utils.Logger.info(`File already loaded: ${file}`);
+                return;
+            }
+            try {
+                this.cite.add(fs.readFileSync(file,'utf-8'),{forceType:"@bibtex/text"});
+                this.files.push(file);
+                utils.Logger.info(`Loaded bibtex file: ${file}`);
+            } catch (error) {
+                utils.Logger.error(`Failed to load bibtex file: ${file}. ${error.message}`);
+            }
+        });
         return this;
     }
 
@@ -114,8 +119,14 @@ class CiteObj{
         //reload
         context.subscriptions.push(vscode.commands.registerCommand("xitool-vscode.reloadBibtex",()=>{
             const bibPath = this.getBibFilePath();
-            this.citeManager.loadFiles(bibPath);
+            this.citeManager.addFile(bibPath);
             this.treeProvider.update({files:bibPath});
+        }));
+        //add file
+        context.subscriptions.push(vscode.commands.registerCommand("xitool-vscode.addForCite",(element)=>{
+            console.log("addForCite-element:",element);
+            const bibPath = element.path;
+            this.citeManager.addFile([bibPath]);
         }));
     }
 
